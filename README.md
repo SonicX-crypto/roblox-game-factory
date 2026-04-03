@@ -2,6 +2,12 @@
 
 > Enterprise-level AI-driven Roblox game development. Claude Code + Blender MCP + Rojo + CI/CD = полностью автономное создание, тестирование и деплой игр.
 
+**Ключевые документы:**
+
+- [AGENT_PLAYBOOK.md](AGENT_PLAYBOOK.md) — экспертный гайд: подход топ-10 студий, все инструменты, security, performance, монетизация, маркетинг
+- [CLAUDE.md](CLAUDE.md) — правила для AI-агента: code style, архитектура, security rules, build commands
+- [roblox-guide.md](roblox-guide.md) — полный гайд от нуля до заработка на Roblox
+
 ---
 
 ## Стратегия
@@ -150,36 +156,64 @@ push → lint (Selene) → format check (StyLua) → test (Lune) → build (Rojo
 ```
 roblox/
 ├── .github/workflows/
-│   └── ci.yml                 # CI/CD: lint → test → build → deploy
+│   └── ci.yml                     # CI/CD: lint → test → build → deploy
+├── .githooks/
+│   └── pre-commit                 # Auto lint+format check при коммите
+├── .vscode/
+│   ├── settings.json              # Luau LSP, format on save
+│   └── extensions.json            # Рекомендованные расширения
 ├── src/
-│   ├── server/                # Серверные скрипты (логика, данные, безопасность)
+│   ├── server/                    # Серверные скрипты
+│   │   ├── services/              # DataService, EconomyService, SecurityService
 │   │   └── init.server.luau
 │   ├── client/
-│   │   ├── gui/               # UI (ScreenGui, магазин, HUD)
-│   │   └── scripts/           # Клиентские скрипты (ввод, камера, эффекты)
+│   │   ├── controllers/           # InputController, CameraController
+│   │   ├── gui/
+│   │   │   ├── components/        # Fusion UI компоненты
+│   │   │   ├── hooks/             # UI hooks
+│   │   │   └── stories/           # Hoarcekat preview stories
+│   │   └── scripts/
 │   │       └── init.client.luau
-│   ├── shared/                # Общие модули (server + client)
+│   ├── shared/
+│   │   ├── constants/
+│   │   │   ├── GameConfig.luau    # ВСЕ числа балансировки
+│   │   │   └── FeatureFlags.luau  # Переключатели функций
+│   │   ├── types/
+│   │   │   └── PlayerData.luau    # Схема данных игрока
+│   │   ├── network/               # Определения сетевых событий
+│   │   ├── utils/
+│   │   │   ├── RateLimit.luau     # Защита от спама remotes
+│   │   │   └── ObjectPool.luau    # Пул объектов (performance)
 │   │   └── init.luau
-│   └── storage/               # ServerStorage (шаблоны, данные)
+│   ├── storage/                   # ServerStorage
+│   └── dev/server/                # Debug-инструменты (только dev.project.json)
+├── lune/
+│   ├── build.luau                 # Полный build pipeline
+│   └── dev.luau                   # Dev server launcher
 ├── tests/
-│   └── runner.luau            # Тесты через Lune
-├── assets/                    # Исходники ассетов (текстуры, звуки, модели)
+│   └── runner.luau                # Тесты через Lune
+├── assets/                        # Исходники ассетов (Asphalt-managed)
 ├── studio-plugin/
-│   └── ClaudeCodeBridge.server.lua  # Плагин Studio для удалённого доступа
+│   └── ClaudeCodeBridge.server.lua
 ├── tools/
-│   ├── screenshot.sh          # Захват скриншотов (screen/studio/blender)
-│   └── studio-bridge.py       # HTTP-мост Claude Code ↔ Studio
-├── default.project.json       # Rojo: маппинг файлов → Studio
-├── rokit.toml                 # Тулчейн: версии всех инструментов
-├── wally.toml                 # Зависимости: Promise, Fusion, TestEZ
-├── selene.toml                # Конфигурация линтера
-├── .stylua.toml               # Конфигурация форматтера
-├── .darklua.json              # Код-процессор: dead code, require paths
-├── asphalt.toml               # Asset pipeline конфигурация
-├── analyzer.py                # Скрипт аналитики конкурентов
-├── analytics-report.md        # Отчёт: заброшенные игры с потенциалом
-├── roblox-guide.md            # Гайд: от нуля до заработка
-└── presentation.html          # Презентация стратегии
+│   ├── screenshot.sh              # Визуальный контроль
+│   └── studio-bridge.py           # HTTP-мост Claude Code ↔ Studio
+├── AGENT_PLAYBOOK.md              # Экспертный гайд для AI-агента
+├── CLAUDE.md                      # Правила проекта для Claude Code
+├── default.project.json           # Rojo production config
+├── dev.project.json               # Rojo dev config (с debug tools)
+├── rokit.toml                     # Тулчейн (9 инструментов)
+├── wally.toml                     # Пакеты (Promise, Fusion, t, Trove...)
+├── selene.toml                    # Линтер
+├── .stylua.toml                   # Форматтер
+├── .luaurc                        # Luau strict mode + все линты
+├── .darklua.json                  # Код-процессор
+├── .editorconfig                  # Единые настройки редакторов
+├── asphalt.toml                   # Asset pipeline
+├── analyzer.py                    # Аналитика конкурентов
+├── analytics-report.md            # Отчёт по заброшенным играм
+├── roblox-guide.md                # Гайд от нуля до заработка
+└── presentation.html              # Презентация стратегии
 ```
 
 ---
