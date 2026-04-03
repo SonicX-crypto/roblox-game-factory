@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roblox: От нуля до заработка</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a2e;
+    --border: #2a2a3e;
+    --text: #e4e4ef;
+    --text-dim: #8888a0;
+    --accent: #6c5ce7;
+    --accent2: #a29bfe;
+    --green: #00e676;
+    --green-dim: #00e67633;
+    --red: #ff5252;
+    --red-dim: #ff525233;
+    --orange: #ffab40;
+    --orange-dim: #ffab4033;
+    --blue: #448aff;
+    --blue-dim: #448aff33;
+    --cyan: #18ffff;
+    --pink: #ff4081;
+    --yellow: #ffd740;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ─── Slide System ─── */
+  .slide {
+    min-height: 100vh;
+    padding: 60px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .slide::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(108,92,231,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ─── Navigation ─── */
+  .nav {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .nav a {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--border);
+    display: block;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .nav a:hover, .nav a.active {
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    transform: scale(1.3);
+  }
+
+  .nav a .tooltip {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .nav a:hover .tooltip { opacity: 1; }
+
+  /* ─── Typography ─── */
+  h1 {
+    font-size: 64px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: var(--accent2); }
+
+  h2 {
+    font-size: 42px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--accent2);
+  }
+
+  .subtitle {
+    font-size: 22px;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 40px;
+    max-width: 700px;
+  }
+
+  .phase-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+
+  /* ─── Cards ─── */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(108,92,231,0.15);
+  }
+
+  .card-icon {
+    font-size: 36px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .card h3 { margin-bottom: 8px; }
+  .card p { color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+
+  /* ─── Stats Row ─── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin: 30px 0;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .stat-box .number {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--green);
+    display: block;
+  }
+
+  .stat-box .label {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ─── Table ─── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  thead { background: var(--surface2); }
+
+  th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: var(--surface2); }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-red { background: var(--red-dim); color: var(--red); }
+  .badge-green { background: var(--green-dim); color: var(--green); }
+  .badge-orange { background: var(--orange-dim); color: var(--orange); }
+  .badge-blue { background: var(--blue-dim); color: var(--blue); }
+
+  /* ─── Timeline ─── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+    margin: 30px 0;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 14px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--green));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+    padding-left: 20px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  .timeline-item .time {
+    font-size: 13px;
+    color: var(--accent2);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item .title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item .desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ─── Progress Bar ─── */
+  .progress-track {
+    display: flex;
+    gap: 4px;
+    margin: 30px 0 10px;
+  }
+
+  .progress-step {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .progress-step.done { background: var(--accent); }
+  .progress-step.current { background: var(--green); box-shadow: 0 0 10px var(--green); }
+
+  /* ─── Gem Card (for opportunities) ─── */
+  .gem-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+    transition: all 0.3s;
+  }
+
+  .gem-card:hover {
+    border-color: var(--orange);
+    box-shadow: 0 8px 30px rgba(255,171,64,0.1);
+  }
+
+  .gem-card .gem-name {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .gem-card .gem-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .gem-card .gem-stat {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .gem-card .gem-stat strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  .gem-card .gem-verdict {
+    text-align: right;
+  }
+
+  .gem-card .gem-drop {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--red);
+  }
+
+  .gem-card .gem-drop-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+
+  /* ─── Like Bar ─── */
+  .like-bar {
+    width: 80px;
+    height: 8px;
+    background: var(--red-dim);
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+
+  .like-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s;
+  }
+
+  /* ─── Funnel ─── */
+  .funnel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 30px 0;
+  }
+
+  .funnel-step {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px 32px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 600;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .funnel-step:hover {
+    border-color: var(--accent);
+    transform: scale(1.02);
+  }
+
+  .funnel-step .funnel-num {
+    color: var(--accent2);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  .funnel-arrow {
+    color: var(--text-dim);
+    font-size: 18px;
+  }
+
+  /* ─── Action Box ─── */
+  .action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .action-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+
+  .action-item:hover { border-left-color: var(--green); transform: translateX(4px); }
+
+  .action-item .day {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent2);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .action-item .task {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .action-item .detail {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  /* ─── Split Layout ─── */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* ─── Pill List ─── */
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0;
+  }
+
+  .pill {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .pill:hover { border-color: var(--accent); background: var(--accent); color: #fff; }
+
+  /* ─── Glow text ─── */
+  .glow { color: var(--green); text-shadow: 0 0 20px rgba(0,230,118,0.3); }
+  .glow-orange { color: var(--orange); text-shadow: 0 0 20px rgba(255,171,64,0.3); }
+  .glow-red { color: var(--red); text-shadow: 0 0 20px rgba(255,82,82,0.3); }
+  .glow-blue { color: var(--blue); text-shadow: 0 0 20px rgba(68,138,255,0.3); }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .slide { padding: 40px 24px; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 28px; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .split { grid-template-columns: 1fr; }
+    .nav { display: none; }
+    .cards { grid-template-columns: 1fr; }
+    .gem-card { grid-template-columns: 1fr; }
+  }
+
+  /* ─── Scroll animation ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ─── Highlight number ─── */
+  .big-num {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: -3px;
+    line-height: 1;
+  }
+
+  .money-table td:nth-child(2),
+  .money-table td:nth-child(3) { font-weight: 700; }
+</style>
+</head>
+<body>
+
+<!-- Navigation dots -->
+<nav class="nav" id="nav"></nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 0: Title -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s0" data-title="Начало">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--accent); color: #fff;">Полный гайд 2026</div>
+    <h1>Roblox:<br><span>от нуля до денег</span></h1>
+    <p class="subtitle">Как создать игру с помощью нейросетей и начать зарабатывать. Без опыта. Пошагово.</p>
+
+    <div class="stats-row" style="max-width: 800px;">
+      <div class="stat-box">
+        <span class="number">$1.5B+</span>
+        <span class="label">Выплачено разработчикам в 2025</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="color: var(--accent2);">7,629</span>
+        <span class="label">Игр проанализировано</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="color: var(--orange);">3,368</span>
+        <span class="label">Заброшенных алмазов найдено</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="color: var(--red);">1,116</span>
+        <span class="label">Популярных с плохим рейтингом</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1: How it works -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s1" data-title="Как это работает">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--blue-dim); color: var(--blue);">Фаза 0</div>
+    <h2>Как устроен заработок</h2>
+    <p class="subtitle">Простая цепочка: создал игру &rarr; игроки тратят Robux &rarr; выводишь деньги на карту</p>
+
+    <div class="funnel">
+      <div class="funnel-step" style="width: 90%;"><span class="funnel-num">Шаг 1</span>Создаёшь игру в Roblox Studio (бесплатно)</div>
+      <div class="funnel-arrow">&darr;</div>
+      <div class="funnel-step" style="width: 78%;"><span class="funnel-num">Шаг 2</span>Игроки покупают Game Pass, бустеры, скины за Robux</div>
+      <div class="funnel-arrow">&darr;</div>
+      <div class="funnel-step" style="width: 66%;"><span class="funnel-num">Шаг 3</span>Накопил 30,000 Robux &rarr; подаёшь на DevEx</div>
+      <div class="funnel-arrow">&darr;</div>
+      <div class="funnel-step" style="width: 54%; border-color: var(--green);"><span class="funnel-num" style="color: var(--green);">Шаг 4</span><span class="glow">Деньги на PayPal / банковский счёт</span></div>
+    </div>
+
+    <h3 style="margin-top: 30px;">Курс вывода (DevEx)</h3>
+    <div class="table-wrap" style="max-width: 500px;">
+      <table class="money-table">
+        <thead><tr><th>Robux</th><th>USD</th><th>~RUB</th></tr></thead>
+        <tbody>
+          <tr><td>30,000</td><td class="glow">$114</td><td>~10,000 &#8381;</td></tr>
+          <tr><td>100,000</td><td class="glow">$380</td><td>~34,000 &#8381;</td></tr>
+          <tr><td>500,000</td><td class="glow">$1,900</td><td>~170,000 &#8381;</td></tr>
+          <tr><td>1,000,000</td><td class="glow">$3,800</td><td>~340,000 &#8381;</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2: AI Tools -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s2" data-title="ИИ-инструменты">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--green-dim); color: var(--green);">Фаза 1</div>
+    <h2>Твой арсенал ИИ</h2>
+    <p class="subtitle">Всё что нужно для создания игры без опыта</p>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">&#129302;</span>
+        <h3>Roblox AI Assistant</h3>
+        <p>Встроен в Studio. Генерирует код, объекты и целые сцены из текстовых описаний. Бесплатно.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#128172;</span>
+        <h3>Claude / ChatGPT</h3>
+        <p>Пишет Luau-скрипты, придумывает геймдизайн, создаёт NPC-диалоги, планирует монетизацию.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#127912;</span>
+        <h3>SEELE AI / Meshy</h3>
+        <p>Text-to-3D: опиши объект словами &rarr; получи готовую 3D-модель за 30 секунд. Экспорт в FBX.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#128302;</span>
+        <h3>SuperbulletAI</h3>
+        <p>ИИ-конструктор специально для Roblox. 1 млн бесплатных токенов в месяц.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#127922;</span>
+        <h3>Cube 3D (Roblox)</h3>
+        <p>Фундаментальная модель от Roblox для генерации 3D-окружений из текста. Прямо в Studio.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">&#129513;</span>
+        <h3>Blender (бесплатно)</h3>
+        <p>Профессиональный 3D-редактор. Для кастомных моделей и UGC-предметов на продажу.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 3: Genre Picker -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s3" data-title="Выбор жанра">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--orange-dim); color: var(--orange);">Фаза 2</div>
+    <h2>Какой жанр выбрать?</h2>
+    <p class="subtitle">От простого к сложному. Начни с обби &mdash; самый быстрый путь к первым деньгам.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Жанр</th>
+            <th>Сложность</th>
+            <th>Доход/мес</th>
+            <th>Время до денег</th>
+            <th>Вирусность</th>
+            <th>Для новичка?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Обби (Obstacle)</strong></td>
+            <td><span class="badge badge-green">Легко</span></td>
+            <td>$50 &ndash; $5K</td>
+            <td>1-3 мес</td>
+            <td><span class="badge badge-orange">Средняя</span></td>
+            <td><span class="glow" style="font-weight:800;">ДА, ЛУЧШИЙ СТАРТ</span></td>
+          </tr>
+          <tr>
+            <td><strong>Тайкун (Tycoon)</strong></td>
+            <td><span class="badge badge-orange">Средне</span></td>
+            <td>$200 &ndash; $25K</td>
+            <td>2-4 мес</td>
+            <td><span class="badge badge-orange">Средняя</span></td>
+            <td>Да, после обби</td>
+          </tr>
+          <tr>
+            <td><strong>Симулятор</strong></td>
+            <td><span class="badge badge-orange">Средне</span></td>
+            <td>$500 &ndash; $30K</td>
+            <td>3-6 мес</td>
+            <td><span class="badge badge-green">Высокая</span></td>
+            <td>Можно, но конкуренция</td>
+          </tr>
+          <tr>
+            <td><strong>Хоррор</strong></td>
+            <td><span class="badge badge-orange">Средне</span></td>
+            <td>$200 &ndash; $10K</td>
+            <td>2-4 мес</td>
+            <td><span class="badge badge-green">Очень высокая</span></td>
+            <td>Да, если есть идея</td>
+          </tr>
+          <tr>
+            <td><strong>Ролеплей</strong></td>
+            <td><span class="badge badge-red">Сложно</span></td>
+            <td>$1K &ndash; $50M+</td>
+            <td>6-12 мес</td>
+            <td><span class="badge badge-green">Высокая</span></td>
+            <td>Не для старта</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 4: The Strategy -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s4" data-title="Стратегия">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--red-dim); color: var(--red);">Ключевая стратегия</div>
+    <h2>Находи <span class="glow-orange">провалившиеся</span> игры и делай лучше</h2>
+    <p class="subtitle">Миллиарды визитов доказывают что идея работает. Низкий рейтинг значит что реализация слабая. Твоя возможность.</p>
+
+    <div class="split">
+      <div>
+        <h3>Как искать?</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="time">Шаг 1</div>
+            <div class="title">Profitable.app</div>
+            <div class="desc">Фильтр "Popular but Abandoned" &mdash; игры с 100+ CCU, заброшенные 6+ месяцев</div>
+          </div>
+          <div class="timeline-item">
+            <div class="time">Шаг 2</div>
+            <div class="title">Rolimon's Game Table</div>
+            <div class="desc">Сравни Peak Players vs текущий CCU. Был 10K, стал 50 = возможность</div>
+          </div>
+          <div class="timeline-item">
+            <div class="time">Шаг 3</div>
+            <div class="title">RoMonitor Stats</div>
+            <div class="desc">История CCU. Ищи паттерн "spike and drop" &mdash; резкий рост, потом падение</div>
+          </div>
+          <div class="timeline-item">
+            <div class="time">Шаг 4</div>
+            <div class="title">Поиграй сам</div>
+            <div class="desc">Пойми что зацепило и что бесило. Прочитай отзывы. Сделай лучше.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Что искать?</h3>
+        <div class="table-wrap" style="margin-top: 16px;">
+          <table>
+            <thead><tr><th>Метрика</th><th>= Возможность</th></tr></thead>
+            <tbody>
+              <tr><td>Peak CCU</td><td><span class="glow">5,000+ (был спрос)</span></td></tr>
+              <tr><td>Текущий CCU</td><td><span class="glow-red">&lt; 100 (все ушли)</span></td></tr>
+              <tr><td>Like %</td><td><span class="glow-orange">30-60% (плохая реализация)</span></td></tr>
+              <tr><td>Визиты</td><td><span class="glow-blue">1M+ (идея привлекает)</span></td></tr>
+              <tr><td>Обновления</td><td><span class="glow-red">6+ мес назад (заброшено)</span></td></tr>
+              <tr><td>Фавориты</td><td><span class="glow">Высокие (людям нравится идея)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="background: var(--surface); border: 1px solid var(--green); border-radius: 12px; padding: 20px; margin-top: 20px;">
+          <h3 style="color: var(--green);">Это легально?</h3>
+          <p style="font-size: 14px; color: var(--text-dim); line-height: 1.6;">
+            Да. Создавать улучшенную версию со своим кодом и ассетами &mdash; разрешено.
+            Нельзя копировать чужой код и модели. Примеры успеха: Loomian Legacy (Pokemon), Sonic Speed Simulator.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 5: Abandoned Gems (data) -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s5" data-title="Заброшенные алмазы">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--orange-dim); color: var(--orange);">Данные анализа</div>
+    <h2>Топ заброшенных игр с потенциалом</h2>
+    <p class="subtitle">Из 7,629 проанализированных. Отсортировано по потенциалу (пик * визиты * фавориты).</p>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">MeepCity</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>169.8K</strong></div>
+          <div class="gem-stat">Визиты: <strong>16.3B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>14.8M</strong></div>
+          <div class="gem-stat">Лайк: <strong>84.9%</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">1,222x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">Pet Simulator X!</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>1.5M</strong></div>
+          <div class="gem-stat">Визиты: <strong>9.0B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>6.0M</strong></div>
+          <div class="gem-stat">Лайк: <strong>91.4%</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">815x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">Mad City: Chapter 2</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>244.3K</strong></div>
+          <div class="gem-stat">Визиты: <strong>2.6B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>5.8M</strong></div>
+          <div class="gem-stat">Лайк: <strong>83.5%</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">993x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">Ninja Legends</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>263.6K</strong></div>
+          <div class="gem-stat">Визиты: <strong>2.1B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>4.7M</strong></div>
+          <div class="gem-stat">Лайк: <strong>92.5%</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">233x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">Anime Defenders</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>377.8K</strong></div>
+          <div class="gem-stat">Визиты: <strong>3.4B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>909K</strong></div>
+          <div class="gem-stat">Лайк: <strong>96.7%</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">883x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+
+    <div class="gem-card">
+      <div>
+        <div class="gem-name">Piggy</div>
+        <div class="gem-stats">
+          <div class="gem-stat">Пик: <strong>533.4K</strong></div>
+          <div class="gem-stat">Визиты: <strong>14.1B</strong></div>
+          <div class="gem-stat">Фавориты: <strong>12.1M</strong></div>
+          <div class="gem-stat">Лайк: <strong>90.2%</strong> &mdash; Жанр: <strong>Horror</strong></div>
+        </div>
+      </div>
+      <div class="gem-verdict">
+        <div class="gem-drop">76x</div>
+        <div class="gem-drop-label">падение CCU</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 6: Low rated popular -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s6" data-title="Плохой рейтинг">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--red-dim); color: var(--red);">Золотые возможности</div>
+    <h2>Популярные, но <span class="glow-red">нелюбимые</span></h2>
+    <p class="subtitle">Миллиарды визитов, но половине игроков не нравится. Идея цепляет &mdash; исполнение подводит.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>#</th><th>Игра</th><th>Визиты</th><th>Рейтинг</th><th style="width:100px;">Визуально</th><th>CCU</th><th>Peak</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td><strong>Barry's Prison Run (Obby)</strong></td><td>4.3B</td>
+            <td><span class="badge badge-red">59.8%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:59.8%; background: var(--red);"></div></div></td>
+            <td>17,391</td><td>92.7K</td>
+          </tr>
+          <tr>
+            <td>2</td><td><strong>Escape Papa Pizza's (Scary Obby)</strong></td><td>936M</td>
+            <td><span class="badge badge-red">45.6%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:45.6%; background: var(--red);"></div></div></td>
+            <td>3,333</td><td>14.4K</td>
+          </tr>
+          <tr>
+            <td>3</td><td><strong>Great School Breakout (FP Obby)</strong></td><td>904M</td>
+            <td><span class="badge badge-red">50.3%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:50.3%; background: var(--red);"></div></div></td>
+            <td>2,139</td><td>16.0K</td>
+          </tr>
+          <tr>
+            <td>4</td><td><strong>Escape Carnival of Terror Obby</strong></td><td>1.1B</td>
+            <td><span class="badge badge-red">55.3%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:55.3%; background: var(--red);"></div></div></td>
+            <td>3,179</td><td>18.3K</td>
+          </tr>
+          <tr>
+            <td>5</td><td><strong>Spider-Man Simulator</strong></td><td>733M</td>
+            <td><span class="badge badge-red">55.0%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:55%; background: var(--red);"></div></div></td>
+            <td>872</td><td>8.0K</td>
+          </tr>
+          <tr>
+            <td>6</td><td><strong>Escape Dungeon Obby</strong></td><td>984M</td>
+            <td><span class="badge badge-red">61.6%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:61.6%; background: var(--orange);"></div></div></td>
+            <td>41</td><td>12.1K</td>
+          </tr>
+          <tr>
+            <td>7</td><td><strong>Tower of Fun</strong></td><td>899M</td>
+            <td><span class="badge badge-red">60.5%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:60.5%; background: var(--orange);"></div></div></td>
+            <td>65</td><td>12.7K</td>
+          </tr>
+          <tr>
+            <td>8</td><td><strong>Escape Castle Fortress Obby</strong></td><td>793M</td>
+            <td><span class="badge badge-red">57.5%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:57.5%; background: var(--red);"></div></div></td>
+            <td>120</td><td>6.5K</td>
+          </tr>
+          <tr>
+            <td>9</td><td><strong>Escape Prison Obby</strong></td><td>718M</td>
+            <td><span class="badge badge-red">58.4%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:58.4%; background: var(--red);"></div></div></td>
+            <td>77</td><td>13.7K</td>
+          </tr>
+          <tr>
+            <td>10</td><td><strong>Parkour!</strong></td><td>719M</td>
+            <td><span class="badge badge-red">64.2%</span></td>
+            <td><div class="like-bar"><div class="like-bar-fill" style="width:64.2%; background: var(--orange);"></div></div></td>
+            <td>0</td><td>31.2K</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--orange); border-radius: 12px; padding: 20px; margin-top: 20px; max-width: 700px;">
+      <h3 style="color: var(--orange);">Вывод</h3>
+      <p style="font-size: 15px; line-height: 1.7;">
+        Обби &mdash; самый популярный жанр среди нелюбимых игр. Почти все они &mdash; escape/обби с сотнями миллионов визитов и рейтингом ниже 60%.
+        <strong style="color: var(--green);">Сделай качественную escape-обби с хорошим UX, красивой графикой и мобильной оптимизацией &mdash; и заберёшь эту аудиторию.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 7: Monetization -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s7" data-title="Монетизация">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--green-dim); color: var(--green);">Фаза 4</div>
+    <h2>Как зарабатывать внутри игры</h2>
+
+    <div class="cards" style="margin-top: 20px;">
+      <div class="card" style="border-left: 4px solid var(--green);">
+        <span class="card-icon">&#127915;</span>
+        <h3>Game Passes</h3>
+        <p style="margin-bottom: 12px;">Одноразовые покупки. Основной источник дохода.</p>
+        <div style="font-size: 13px; color: var(--text);">
+          VIP: <strong>99-499 R$</strong><br>
+          Speed Boost: <strong>49-149 R$</strong><br>
+          Skip Stage: <strong>24-99 R$</strong><br>
+          2x Coins: <strong>99-299 R$</strong>
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--blue);">
+        <span class="card-icon">&#128176;</span>
+        <h3>Developer Products</h3>
+        <p style="margin-bottom: 12px;">Многоразовые покупки. Самый большой объём транзакций.</p>
+        <div style="font-size: 13px; color: var(--text);">
+          Пакеты монет<br>
+          Одноразовые бустеры<br>
+          Ревайв / респавн<br>
+          Лутбоксы
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--orange);">
+        <span class="card-icon">&#128640;</span>
+        <h3>Creator Rewards</h3>
+        <p style="margin-bottom: 12px;">Пассивный доход. Ничего не настраивать.</p>
+        <div style="font-size: 13px; color: var(--text);">
+          <strong class="glow">5 Robux</strong> за каждого качественного дневного игрока<br><br>
+          <strong>35%</strong> от первых $100 расходов новых игроков
+        </div>
+      </div>
+      <div class="card" style="border-left: 4px solid var(--pink);">
+        <span class="card-icon">&#128250;</span>
+        <h3>Rewarded Ads</h3>
+        <p style="margin-bottom: 12px;">Игрок смотрит рекламу &rarr; получает награду &rarr; ты получаешь деньги.</p>
+        <div style="font-size: 13px; color: var(--text);">
+          6-30 секунд рекламы<br>
+          Дополнительный пассивный доход<br>
+          Запущено в 2025
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface); border: 1px solid var(--green); border-radius: 12px; padding: 20px; margin-top: 24px; text-align: center;">
+      <p style="font-size: 16px; font-weight: 600;">
+        Золотое правило: игра <span class="glow">полностью играбельна бесплатно</span>. Платные фишки = удобство и косметика, не необходимость.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 8: Marketing -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s8" data-title="Маркетинг">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--pink); color: #fff;">Фаза 6</div>
+    <h2>Как привлечь игроков</h2>
+    <p class="subtitle">Без игроков = без денег. Маркетинг важнее самой игры.</p>
+
+    <div class="split">
+      <div>
+        <h3>Бесплатные методы</h3>
+        <div class="cards" style="grid-template-columns: 1fr;">
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#127916;</span>
+              <div>
+                <h3 style="color: var(--pink);">TikTok &mdash; #1 канал</h3>
+                <p>9-15 сек POV-клипы, трендовые звуки, 2-3 раза в день. "Попробуй сам &mdash; ссылка в био"</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#9654;&#65039;</span>
+              <div>
+                <h3 style="color: var(--red);">YouTube Shorts</h3>
+                <p>Те же клипы + длинные видео "как я создал игру в Roblox". Органический трафик.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#128172;</span>
+              <div>
+                <h3 style="color: var(--blue);">Discord сервер</h3>
+                <p>Сообщество, обновления, обратная связь. Лояльная аудитория = стабильный CCU.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Платные методы</h3>
+        <div class="cards" style="grid-template-columns: 1fr;">
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#128640;</span>
+              <div>
+                <h3 style="color: var(--orange);">Sponsored Experiences</h3>
+                <p>Твоя игра на главной странице Roblox. Начни с 1-5K Robux, смотри конверсию.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#128270;</span>
+              <div>
+                <h3 style="color: var(--cyan);">Search Ads</h3>
+                <p>Биддинг за ключевые слова в поиске Roblox. Целевой трафик.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display: flex; gap: 16px; align-items: start;">
+              <span style="font-size: 32px;">&#127775;</span>
+              <div>
+                <h3 style="color: var(--yellow);">Jumpstart Program</h3>
+                <p>Программа Roblox для новых разработчиков. Помощь экспертов + продвижение. С марта 2026.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 9: Cash Out -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s9" data-title="Вывод денег">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--green); color: #000;">Фаза 8 &mdash; деньги</div>
+    <h2>Как вывести <span class="glow">деньги на карту</span></h2>
+
+    <div class="split">
+      <div>
+        <h3>Требования DevEx</h3>
+        <div class="table-wrap" style="margin-top: 12px;">
+          <table>
+            <tbody>
+              <tr><td>Минимум Robux</td><td><strong>30,000</strong> (заработанных, не купленных)</td></tr>
+              <tr><td>Roblox Premium</td><td><strong>$4.99/мес</strong> (обязательно)</td></tr>
+              <tr><td>Возраст</td><td><strong>13+</strong> (13-17 с согласия родителей)</td></tr>
+              <tr><td>Email</td><td>Подтверждён</td></tr>
+              <tr><td>Аккаунт</td><td>Без нарушений</td></tr>
+              <tr><td>Налоговая форма</td><td><strong>W-8BEN</strong> (для РФ/СНГ)</td></tr>
+              <tr><td>Вывод</td><td>Макс <strong>1 раз в месяц</strong></td></tr>
+              <tr><td>Обработка</td><td>5-10 рабочих дней</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3>Способы получения</h3>
+        <div class="cards" style="grid-template-columns: 1fr; margin-top: 12px;">
+          <div class="card" style="padding: 16px 24px; border-left: 4px solid var(--green);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>PayPal</strong>
+                <p style="font-size: 13px;">Лучший вариант для СНГ</p>
+              </div>
+              <span class="badge badge-green">1-2 дня</span>
+            </div>
+          </div>
+          <div class="card" style="padding: 16px 24px; border-left: 4px solid var(--blue);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>Wire Transfer</strong>
+                <p style="font-size: 13px;">На банковский счёт</p>
+              </div>
+              <span class="badge badge-blue">3-10 дней</span>
+            </div>
+          </div>
+          <div class="card" style="padding: 16px 24px; border-left: 4px solid var(--orange);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong>Налог</strong>
+                <p style="font-size: 13px;">W-8BEN, удержание 30% (снижается через договор)</p>
+              </div>
+              <span class="badge badge-orange">W-8BEN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 10: Expectations -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s10" data-title="Ожидания">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--surface2); color: var(--text-dim);">Реальность</div>
+    <h2>Реалистичные ожидания</h2>
+
+    <div class="stats-row">
+      <div class="stat-box">
+        <span class="number" style="font-size: 28px;">$1,440</span>
+        <span class="label">Медианный доход / год</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="font-size: 28px; color: var(--orange);">$1.3M</span>
+        <span class="label">Среднее у топ-1000</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="font-size: 28px; color: var(--pink);">$7M</span>
+        <span class="label">Среднее у топ-100</span>
+      </div>
+      <div class="stat-box">
+        <span class="number" style="font-size: 28px; color: var(--yellow);">$38.5M</span>
+        <span class="label">Среднее у топ-10</span>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="max-width: 700px;">
+      <table>
+        <thead><tr><th>Сценарий</th><th>До первого вывода</th><th>Доход/мес</th></tr></thead>
+        <tbody>
+          <tr><td>Простая обби, мало игроков</td><td>6-12 мес</td><td>$10-50</td></tr>
+          <tr><td>Хорошая игра + маркетинг</td><td>3-6 мес</td><td>$50-500</td></tr>
+          <tr><td style="color: var(--green);">Вирусный хит (TikTok)</td><td style="color: var(--green);">1-3 мес</td><td style="color: var(--green);">$500-5,000+</td></tr>
+          <tr><td style="color: var(--yellow);">Топ-игра (редко)</td><td style="color: var(--yellow);">6-12 мес</td><td style="color: var(--yellow);">$10,000+</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 11: Action Plan -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<section class="slide" id="s11" data-title="План действий">
+  <div class="fade-in">
+    <div class="phase-tag" style="background: var(--accent); color: #fff;">Действуй</div>
+    <h2>План на первую неделю</h2>
+    <p class="subtitle">Конкретные шаги. Каждый день &mdash; одна задача.</p>
+
+    <div class="action-grid">
+      <div class="action-item" style="border-left-color: var(--blue);">
+        <div class="day">День 1</div>
+        <div class="task">Подготовка</div>
+        <div class="detail">Аккаунт Roblox + скачать Studio + базовый туториал</div>
+      </div>
+      <div class="action-item" style="border-left-color: var(--accent);">
+        <div class="day">День 2</div>
+        <div class="task">Аналитика</div>
+        <div class="detail">Установить RoMonitor + Profitable.app. Найти 5-10 заброшенных игр</div>
+      </div>
+      <div class="action-item" style="border-left-color: var(--orange);">
+        <div class="day">День 3</div>
+        <div class="task">Исследование</div>
+        <div class="detail">Поиграть в найденные игры. Записать плюсы и минусы. Выбрать идею</div>
+      </div>
+      <div class="action-item" style="border-left-color: var(--pink);">
+        <div class="day">День 4-5</div>
+        <div class="task">Прототип</div>
+        <div class="detail">Построить прототип на шаблоне. ИИ генерирует код и объекты</div>
+      </div>
+      <div class="action-item" style="border-left-color: var(--cyan);">
+        <div class="day">День 6</div>
+        <div class="task">Скрипты</div>
+        <div class="detail">Чекпоинты, магазин, лидерборд &mdash; всё через ИИ</div>
+      </div>
+      <div class="action-item" style="border-left-color: var(--green);">
+        <div class="day">День 7</div>
+        <div class="task">Запуск!</div>
+        <div class="detail">Тест на мобильных. Полировка. Публикация. Первый TikTok</div>
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, var(--surface), var(--surface2)); border: 1px solid var(--accent); border-radius: 16px; padding: 32px; margin-top: 30px; text-align: center;">
+      <h3 style="font-size: 24px; color: var(--text); margin-bottom: 12px;">Файлы в твоей папке</h3>
+      <div class="pill-list" style="justify-content: center;">
+        <div class="pill" style="border-color: var(--accent);">roblox-guide.md &mdash; полный гайд</div>
+        <div class="pill" style="border-color: var(--green);">analyzer.py &mdash; скрипт аналитики</div>
+        <div class="pill" style="border-color: var(--orange);">analytics-report.md &mdash; отчёт с данными</div>
+        <div class="pill" style="border-color: var(--pink);">presentation.html &mdash; эта презентация</div>
+      </div>
+      <p style="margin-top: 16px; color: var(--text-dim); font-size: 14px;">
+        Запускай <code style="background: var(--surface); padding: 2px 8px; border-radius: 4px; color: var(--green);">python3 analyzer.py</code> в любое время для свежих данных
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+  // Build navigation
+  const slides = document.querySelectorAll('.slide');
+  const nav = document.getElementById('nav');
+
+  slides.forEach((slide, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + slide.id;
+    const tooltip = document.createElement('span');
+    tooltip.className = 'tooltip';
+    tooltip.textContent = slide.dataset.title || `Слайд ${i + 1}`;
+    a.appendChild(tooltip);
+    nav.appendChild(a);
+  });
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+
+        // Update nav
+        const id = e.target.closest('.slide')?.id;
+        if (id) {
+          nav.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+          const active = nav.querySelector(`a[href="#${id}"]`);
+          if (active) active.classList.add('active');
+        }
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Smooth scroll
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelector(a.getAttribute('href'))?.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    const current = [...slides].findIndex(s => {
+      const rect = s.getBoundingClientRect();
+      return rect.top >= -100 && rect.top < window.innerHeight / 2;
+    });
+
+    if (e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      const next = Math.min(current + 1, slides.length - 1);
+      slides[next].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      const prev = Math.max(current - 1, 0);
+      slides[prev].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+</script>
+</body>
+</html>
