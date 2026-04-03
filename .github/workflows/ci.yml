@@ -54,6 +54,12 @@ jobs:
       - name: Install Wally packages
         run: wally install
 
+      - name: Generate sourcemap
+        run: rojo sourcemap default.project.json -o sourcemap.json
+
+      - name: Process code with Darklua
+        run: darklua process src/ dist/ --config .darklua.json
+
       - name: Build .rbxl
         run: |
           mkdir -p build
