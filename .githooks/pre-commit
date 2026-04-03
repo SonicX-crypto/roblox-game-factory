@@ -3,26 +3,30 @@
 
 export PATH="$HOME/.rokit/bin:$HOME/.aftman/bin:$HOME/.cargo/bin:$PATH"
 
-STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.luau$')
+ALL_STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep '\.luau$')
+# Selene only for src/ (lune/tests use Lune globals not recognized by roblox std)
+SRC_STAGED=$(echo "$ALL_STAGED" | grep '^src/' || true)
 
-if [ -z "$STAGED_FILES" ]; then
+if [ -z "$ALL_STAGED" ]; then
     exit 0
 fi
 
 echo "Running StyLua format check..."
-stylua --check $STAGED_FILES
+stylua --check $ALL_STAGED
 if [ $? -ne 0 ]; then
     echo ""
     echo "StyLua formatting failed. Run 'stylua src/' to fix."
     exit 1
 fi
 
-echo "Running Selene lint..."
-selene $STAGED_FILES
-if [ $? -ne 0 ]; then
-    echo ""
-    echo "Selene linting failed. Fix issues before committing."
-    exit 1
+if [ -n "$SRC_STAGED" ]; then
+    echo "Running Selene lint..."
+    selene $SRC_STAGED
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo "Selene linting failed. Fix issues before committing."
+        exit 1
+    fi
 fi
 
 echo "All checks passed."

@@ -54,14 +54,10 @@ jobs:
       - name: Install Wally packages
         run: wally install
 
-      - name: Generate sourcemap
-        run: rojo sourcemap default.project.json -o sourcemap.json
-
-      - name: Process code with Darklua
-        run: darklua process src/ dist/ --config .darklua.json
-
       - name: Build .rbxl
-        run: rojo build default.project.json -o build/game.rbxl
+        run: |
+          mkdir -p build
+          rojo build default.project.json -o build/game.rbxl
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
