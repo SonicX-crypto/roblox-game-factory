@@ -55,6 +55,24 @@
 | **Luau** | Подсветка синтаксиса, автодополнение, проверка типов для языка Luau |
 | **Roblox UI** | Визуальный редактор интерфейсов (ScreenGui, Frames, TextLabels) |
 
+### Визуальный контроль (Claude Code "видит" что делает)
+
+| Инструмент | Назначение |
+|---|---|
+| **screenshot.sh** | Захват экрана, окна Roblox Studio или Blender — Claude Code видит результат |
+| **ClaudeCodeBridge** | Плагин Studio — доступ к сцене, объектам, выполнение Luau-кода удалённо |
+| **studio-bridge.py** | HTTP-мост между Claude Code и Studio plugin |
+| **Blender MCP viewport** | Скриншот 3D-viewport Blender через MCP |
+| **ImageMagick** | Обработка изображений — иконки, thumbnails, ресайз текстур |
+
+Как Claude Code "видит":
+
+- `./tools/screenshot.sh studio` — скриншот окна Roblox Studio
+- `./tools/screenshot.sh blender` — скриншот окна Blender
+- `./tools/screenshot.sh screen` — весь экран
+- Blender MCP → `get_viewport_screenshot` — viewport Blender напрямую
+- ClaudeCodeBridge → `get_scene_tree` — полное дерево объектов сцены Studio
+
 ### MCP-серверы (AI-интеграции)
 
 | MCP | Назначение |
@@ -74,6 +92,7 @@
 |---|---|
 | **Roblox Studio** | Основная среда — сборка мира, тестирование, публикация |
 | **Blender** | 3D-моделирование (управляется через MCP) |
+| **ImageMagick** | CLI для обработки изображений (иконки, текстуры, thumbnails) |
 
 ### Аналитические инструменты
 
@@ -100,9 +119,14 @@
 roblox/
 ├── README.md              # Этот файл — стратегия и арсенал
 ├── aftman.toml             # Конфигурация тулчейна (Rojo, Wally, Selene, StyLua)
-├── roblox_api              # API-ключ Roblox Open Cloud
+├── roblox_api              # API-ключ Roblox Open Cloud (в .gitignore)
 ├── analyzer.py             # Скрипт аналитики — парсинг Rolimon's, RoMonitor Stats
 ├── analytics-report.md     # Отчёт: заброшенные игры с потенциалом для ремейка
+├── studio-plugin/
+│   └── ClaudeCodeBridge.server.lua  # Плагин Studio — удалённый доступ к сцене
+├── tools/
+│   ├── screenshot.sh       # Захват скриншотов (экран, Studio, Blender)
+│   └── studio-bridge.py    # HTTP-мост Claude Code <-> Studio plugin
 ├── roblox-guide.md         # Полный гайд: от нуля до заработка на Roblox с ИИ
 └── presentation.html       # Презентация стратегии
 ```
