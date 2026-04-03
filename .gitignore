@@ -9,10 +9,17 @@ node_modules/
 wally_packages/
 
 # Rojo build output
+build/
 *.rbxl
 *.rbxlx
 *.rbxm
 *.rbxmx
+
+# Darklua processed output
+dist/
+
+# Sourcemaps
+sourcemap.json
 
 # OS files
 .DS_Store
@@ -20,3 +27,6 @@ Thumbs.db
 
 # IDE
 .vscode/settings.json
+
+# Rokit binary cache
+.rokit-cache/

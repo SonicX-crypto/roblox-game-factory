@@ -1,115 +1,147 @@
 # Roblox Game Factory
 
-> AI-driven разработка Roblox-игр. Claude Code + Blender MCP + Rojo = автономное создание игр от идеи до публикации.
+> Enterprise-level AI-driven Roblox game development. Claude Code + Blender MCP + Rojo + CI/CD = полностью автономное создание, тестирование и деплой игр.
 
 ---
 
 ## Стратегия
 
 ### Цель
-Создать прибыльную Roblox-игру с минимальным ручным трудом, используя ИИ для написания кода, генерации 3D-моделей и аналитики рынка.
+
+Войти в топ-10 разработчиков Roblox по доходу, используя ИИ для максимальной автоматизации всего pipeline: от аналитики рынка до публикации и LiveOps.
 
 ### Подход: "Улучшенный ремейк"
+
 1. **Найти** заброшенные игры с доказанным спросом (высокий пик CCU, но упавшая аудитория)
 2. **Проанализировать** почему аудитория ушла (низкий Like%, отзывы, отсутствие обновлений)
 3. **Создать свою версию** с нуля — свой код, свои ассеты, улучшенный UX
 4. **Запустить** с TikTok/YouTube маркетингом
-5. **Итерировать** на основе метрик (DAU, retention, ARPDAU)
+5. **Итерировать** на основе A/B тестов и метрик (DAU, retention, ARPDAU)
 
 ### Монетизация
+
 - Game Passes (VIP, Skip Stage, Speed Boost)
 - Developer Products (пакеты валюты, бустеры)
 - Подписки (ежемесячный VIP)
 - Creator Rewards (5 Robux за качественного игрока/день)
 - Rewarded Video Ads
 - Private Servers
+- UGC (аксессуары/одежда через Blender)
 
-### Целевые метрики
-| Метрика | Цель |
-|---|---|
-| Session Time | 10+ мин |
-| D1 Retention | 15%+ |
-| Like % | 70%+ |
-| DAU | Рост неделя к неделе |
+### Целевые метрики (enterprise-level)
+
+| Метрика | Цель | Топ-10 бенчмарк |
+|---|---|---|
+| Session Time | 10+ мин | 20-40 мин |
+| D1 Retention | 15%+ | 30-45% |
+| D7 Retention | 5%+ | 15-25% |
+| D30 Retention | 2%+ | 8-15% |
+| Like % | 70%+ | 85-95% |
+| CCU | 1,000+ | 50,000-500,000 |
+| ARPDAU | $0.01+ | $0.05-0.15 |
 
 ---
 
 ## Арсенал
 
-### CLI-инструменты (Roblox Toolchain)
+### Тулчейн (Rokit — enterprise toolchain manager)
 
 | Инструмент | Версия | Назначение |
 |---|---|---|
-| **Rojo** | 7.7.0-rc.1 | Синхронизация Luau-кода с Roblox Studio. Позволяет писать код в VSCode и автоматически передавать в Studio |
-| **Wally** | 0.3.2 | Пакетный менеджер для Luau. Установка библиотек: Knit (фреймворк), ProfileService (сохранение данных), Promise и др. |
-| **Selene** | 0.30.1 | Линтер для Luau. Находит ошибки, неиспользуемые переменные, потенциальные баги до запуска |
-| **StyLua** | 2.4.0 | Автоформатирование Luau-кода. Единый стиль во всём проекте |
-| **rbxcloud** | 0.17.0 | CLI для Roblox Open Cloud API. Публикация, управление DataStores, MessagingService, ассетами |
-| **Aftman** | 0.3.0 | Менеджер тулчейна. Управляет версиями Rojo, Wally, Selene, StyLua |
+| **Rokit** | 1.2.0 | Менеджер тулчейна нового поколения (замена Aftman/Foreman). Per-project версионирование |
+| **Rojo** | 7.6.1 | Синхронизация Luau-кода с Roblox Studio. Filesystem-first workflow |
+| **Wally** | 0.3.2 | Пакетный менеджер. npm/Cargo для Roblox |
+| **Selene** | 0.30.1 | Линтер — находит баги, unused vars, потенциальные уязвимости |
+| **StyLua** | 2.4.0 | Автоформатирование — единый code style |
+| **Lune** | 0.10.4 | Luau-рантайм вне Roblox (Node.js для Luau). CI/CD скрипты, тесты, автоматизация |
+| **Darklua** | 0.18.0 | Код-процессор: dead code elimination, require-path rewriting, минификация |
+| **Asphalt** | 1.2.0 | Asset pipeline: автозагрузка текстур/звуков/моделей в Roblox, codegen asset IDs |
+| **rbxcloud** | 0.17.0 | Roblox Open Cloud CLI: публикация, DataStores, MessagingService, Luau Execution |
+| **ImageMagick** | latest | Обработка изображений: иконки, thumbnails, текстуры |
+
+### Wally-пакеты (библиотеки)
+
+| Пакет | Назначение |
+|---|---|
+| **Promise** | Async/await, отмена, race conditions — замена сырых coroutines |
+| **Fusion** | Реактивный UI-фреймворк (signals-based). Декларативный UI вместо ручного Instance.new |
+| **TestEZ** | BDD-тестирование (describe/it/expect) |
+| **ProfileStore** | Session-locked DataStore обёртка с auto-save (замена ProfileService) |
+| **GameAnalytics SDK** | Аналитика: события, воронки, retention, revenue tracking |
 
 ### VSCode расширения
 
 | Расширение | Назначение |
 |---|---|
-| **Rojo** | Интеграция Rojo в VSCode — кнопки синхронизации, автоподключение к Studio |
-| **Luau** | Подсветка синтаксиса, автодополнение, проверка типов для языка Luau |
-| **Roblox UI** | Визуальный редактор интерфейсов (ScreenGui, Frames, TextLabels) |
+| **Rojo** | Синхронизация с Studio из VSCode |
+| **Luau LSP** | Language server: автодополнение, проверка типов, диагностика, sourcemap-aware |
+| **Roblox UI** | Визуальный редактор интерфейсов |
 
-### Визуальный контроль (Claude Code "видит" что делает)
+### Визуальный контроль (Claude Code "видит")
 
-| Инструмент | Назначение |
+| Инструмент | Что видит |
 |---|---|
-| **screenshot.sh** | Захват экрана, окна Roblox Studio или Blender — Claude Code видит результат |
-| **ClaudeCodeBridge** | Плагин Studio — доступ к сцене, объектам, выполнение Luau-кода удалённо |
-| **studio-bridge.py** | HTTP-мост между Claude Code и Studio plugin |
-| **Blender MCP viewport** | Скриншот 3D-viewport Blender через MCP |
-| **ImageMagick** | Обработка изображений — иконки, thumbnails, ресайз текстур |
+| **screenshot.sh screen** | Весь экран — общая картина |
+| **screenshot.sh studio** | Окно Roblox Studio — viewport, explorer, properties |
+| **screenshot.sh blender** | Окно Blender — 3D модели |
+| **Blender MCP viewport** | Viewport Blender напрямую через MCP |
+| **ClaudeCodeBridge** | Дерево сцены Studio, свойства объектов, исходники скриптов |
 
-Как Claude Code "видит":
+Команды ClaudeCodeBridge в Studio:
 
-- `./tools/screenshot.sh studio` — скриншот окна Roblox Studio
-- `./tools/screenshot.sh blender` — скриншот окна Blender
-- `./tools/screenshot.sh screen` — весь экран
-- Blender MCP → `get_viewport_screenshot` — viewport Blender напрямую
-- ClaudeCodeBridge → `get_scene_tree` — полное дерево объектов сцены Studio
+- `get_scene_tree` — полное дерево сцены
+- `create_part` — создать объект с позицией, размером, цветом, материалом
+- `create_script` — создать Script/LocalScript/ModuleScript с кодом
+- `execute_luau` — выполнить произвольный Luau-код в Studio
+- `set_property` — изменить свойства любого объекта
+- `find_objects` — поиск по имени/классу
+- `delete_object` — удалить объект
+- `get_stats` — количество частей, скриптов, мешей
 
-### MCP-серверы (AI-интеграции)
+### MCP-серверы
 
 | MCP | Назначение |
 |---|---|
-| **Blender MCP** | Claude Code управляет Blender напрямую — создание 3D-моделей, текстурирование, экспорт в .fbx для импорта в Studio |
+| **Blender MCP** | Полный контроль Blender: создание моделей, текстурирование, экспорт |
+| **n8n MCP** | Автоматизация workflow: маркетинг, мониторинг, уведомления |
 
-Возможности Blender MCP:
-- Генерация 3D-моделей через текстовые промпты (Hyper3D, Hunyuan3D)
-- Скачивание готовых ассетов с PolyHaven и Sketchfab
-- Программное управление сценой (создание объектов, материалов, анимаций)
-- Скриншоты viewport для превью
-- Экспорт в форматы, совместимые с Roblox Studio (.fbx, .obj)
+Blender MCP возможности:
 
-### Приложения
+- Генерация 3D-моделей через промпты (Hyper3D, Hunyuan3D)
+- Скачивание ассетов с PolyHaven и Sketchfab
+- Программное управление сценой
+- Экспорт в .fbx/.obj для Roblox Studio
 
-| Приложение | Назначение |
-|---|---|
-| **Roblox Studio** | Основная среда — сборка мира, тестирование, публикация |
-| **Blender** | 3D-моделирование (управляется через MCP) |
-| **ImageMagick** | CLI для обработки изображений (иконки, текстуры, thumbnails) |
+### CI/CD Pipeline (GitHub Actions)
 
-### Аналитические инструменты
+```
+push → lint (Selene) → format check (StyLua) → test (Lune) → build (Rojo) → deploy (rbxcloud)
+```
+
+Автоматически при каждом пуше:
+
+1. **Lint** — Selene проверяет код на ошибки
+2. **Format** — StyLua проверяет стиль
+3. **Test** — Lune запускает тесты
+4. **Build** — Wally install → Darklua process → Rojo build → .rbxl
+5. **Deploy** — rbxcloud публикует на Roblox (только из main)
+
+### Аналитика конкурентов
 
 | Инструмент | Назначение |
 |---|---|
-| **Profitable.app** | Фильтры "Hidden Gems", "Popular but Abandoned" — поиск ниш |
-| **Rolimon's Game Table** | Сравнение Peak CCU vs Current — массовый скрининг |
-| **RoMonitor Stats** | Исторические графики CCU, Chrome-расширение |
-| **Rotrends** | Revenue, session time, trending lists, 100K+ игр |
+| **Profitable.app** | Фильтры "Hidden Gems", "Popular but Abandoned" |
+| **Rolimon's Game Table** | Peak vs Current CCU — массовый скрининг |
+| **RoMonitor Stats** | Исторические графики, Chrome-расширение |
+| **Rotrends** | Revenue, session time, 100K+ игр |
 | **RTrack** | Поминутные данные, многолетняя история |
-| **analyzer.py** | Наш скрипт — парсит Rolimon's + RoMonitor, генерирует отчёт по заброшенным играм |
+| **analyzer.py** | Наш скрипт — парсит данные, генерирует отчёт |
 
 ### API-ключи
 
 | Ключ | Файл | Назначение |
 |---|---|---|
-| Roblox Open Cloud | `roblox_api` | Публикация, DataStores, MessagingService, управление ассетами |
+| Roblox Open Cloud | `roblox_api` (в .gitignore) | Публикация, DataStores, MessagingService, Assets |
 
 ---
 
@@ -117,87 +149,136 @@
 
 ```
 roblox/
-├── README.md              # Этот файл — стратегия и арсенал
-├── aftman.toml             # Конфигурация тулчейна (Rojo, Wally, Selene, StyLua)
-├── roblox_api              # API-ключ Roblox Open Cloud (в .gitignore)
-├── analyzer.py             # Скрипт аналитики — парсинг Rolimon's, RoMonitor Stats
-├── analytics-report.md     # Отчёт: заброшенные игры с потенциалом для ремейка
+├── .github/workflows/
+│   └── ci.yml                 # CI/CD: lint → test → build → deploy
+├── src/
+│   ├── server/                # Серверные скрипты (логика, данные, безопасность)
+│   │   └── init.server.luau
+│   ├── client/
+│   │   ├── gui/               # UI (ScreenGui, магазин, HUD)
+│   │   └── scripts/           # Клиентские скрипты (ввод, камера, эффекты)
+│   │       └── init.client.luau
+│   ├── shared/                # Общие модули (server + client)
+│   │   └── init.luau
+│   └── storage/               # ServerStorage (шаблоны, данные)
+├── tests/
+│   └── runner.luau            # Тесты через Lune
+├── assets/                    # Исходники ассетов (текстуры, звуки, модели)
 ├── studio-plugin/
-│   └── ClaudeCodeBridge.server.lua  # Плагин Studio — удалённый доступ к сцене
+│   └── ClaudeCodeBridge.server.lua  # Плагин Studio для удалённого доступа
 ├── tools/
-│   ├── screenshot.sh       # Захват скриншотов (экран, Studio, Blender)
-│   └── studio-bridge.py    # HTTP-мост Claude Code <-> Studio plugin
-├── roblox-guide.md         # Полный гайд: от нуля до заработка на Roblox с ИИ
-└── presentation.html       # Презентация стратегии
+│   ├── screenshot.sh          # Захват скриншотов (screen/studio/blender)
+│   └── studio-bridge.py       # HTTP-мост Claude Code ↔ Studio
+├── default.project.json       # Rojo: маппинг файлов → Studio
+├── rokit.toml                 # Тулчейн: версии всех инструментов
+├── wally.toml                 # Зависимости: Promise, Fusion, TestEZ
+├── selene.toml                # Конфигурация линтера
+├── .stylua.toml               # Конфигурация форматтера
+├── .darklua.json              # Код-процессор: dead code, require paths
+├── asphalt.toml               # Asset pipeline конфигурация
+├── analyzer.py                # Скрипт аналитики конкурентов
+├── analytics-report.md        # Отчёт: заброшенные игры с потенциалом
+├── roblox-guide.md            # Гайд: от нуля до заработка
+└── presentation.html          # Презентация стратегии
 ```
 
 ---
 
-## Workflow: от идеи до публикации
+## Workflow: от идеи до топ-10
 
 ```
-┌─────────────┐    ┌──────────────┐    ┌──────────────┐
-│  Аналитика  │───>│  Разработка  │───>│  Публикация  │
-│ analyzer.py │    │  Claude Code  │    │   rbxcloud   │
-│ Rolimon's   │    │  + Rojo      │    │ Roblox Studio│
-│ RoMonitor   │    │  + Blender   │    │              │
-└─────────────┘    └──────────────┘    └──────────────┘
-       │                  │                    │
-       v                  v                    v
-  Выбор ниши      Luau-скрипты          Маркетинг
-  и концепта      3D-модели             TikTok/YouTube
-                  UI/UX                 Обновления
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│  Аналитика   │───>│  Разработка  │───>│   CI/CD      │───>│   LiveOps    │
+│              │    │              │    │              │    │              │
+│ analyzer.py  │    │ Claude Code  │    │ GitHub Actions│    │ A/B тесты   │
+│ Profitable   │    │ Rojo + Wally │    │ Selene+StyLua│    │ GameAnalytics│
+│ Rolimon's    │    │ Blender MCP  │    │ Lune tests   │    │ Обновления  │
+│ RoMonitor    │    │ Fusion UI    │    │ rbxcloud     │    │ n8n workflow │
+└──────────────┘    └──────────────┘    └──────────────┘    └──────────────┘
 ```
 
-### 1. Аналитика (найти нишу)
+### 1. Аналитика
+
 ```bash
-python analyzer.py          # Парсит данные, генерирует analytics-report.md
+python analyzer.py                    # Найти заброшенные игры с потенциалом
 ```
 
-### 2. Инициализация проекта
+### 2. Инициализация
+
 ```bash
-rojo init my-game           # Создать структуру Rojo-проекта
-wally init                  # Инициализировать пакетный менеджер
-wally install               # Установить зависимости (Knit, ProfileService и т.д.)
+wally install                         # Установить пакеты (Promise, Fusion, TestEZ)
+rojo serve                            # Запустить синхронизацию с Studio
 ```
 
-### 3. Разработка (Claude Code делает автономно)
-- Пишет Luau-скрипты (серверные, клиентские, модули)
-- Создаёт 3D-модели через Blender MCP
-- Проверяет код: `selene src/` + `stylua src/`
-- Синхронизирует с Studio: `rojo serve`
+### 3. Разработка (Claude Code автономно)
 
-### 4. Тестирование
-- Rojo синхронизирует код → тестируешь в Roblox Studio (F5)
-- Проверка на мобильных устройствах (эмулятор в Studio)
+- Пишет Luau-скрипты в `src/` → Rojo синхронизирует в Studio
+- Создаёт 3D-модели через Blender MCP → экспорт в .fbx
+- Строит реактивный UI через Fusion
+- Делает скриншоты для визуального контроля
 
-### 5. Публикация
+### 4. Качество
+
 ```bash
-rbxcloud experience publish --api-key $(cat roblox_api) ...
+selene src/                           # Lint — поиск ошибок
+stylua src/                           # Format — единый стиль
+lune run tests/runner                 # Тесты
 ```
-Или через Roblox Studio: File → Publish to Roblox
+
+### 5. Build & Deploy
+
+```bash
+rojo sourcemap default.project.json -o sourcemap.json
+darklua process src/ dist/            # Dead code elimination, require paths
+rojo build default.project.json -o build/game.rbxl
+rbxcloud experience publish ...       # Публикация на Roblox
+```
+
+### 6. Asset Pipeline
+
+```bash
+asphalt sync                          # Загрузить ассеты в Roblox, сгенерировать IDs
+```
 
 ---
 
 ## Быстрый старт
 
-### Предусловия
-- [x] Roblox Studio установлен
-- [x] Blender установлен + MCP подключен
-- [x] VSCode + расширения (Rojo, Luau, Roblox UI)
-- [x] CLI-инструменты установлены (aftman.toml)
-- [x] Roblox API ключ получен
+### Проверка всех инструментов
 
-### Проверка инструментов
 ```bash
-rojo --version      # 7.7.0-rc.1
-wally --version     # 0.3.2
-selene --version    # 0.30.1
-stylua --version    # 2.4.0
-rbxcloud --version  # 0.17.0
+rokit --version     # 1.2.0   — тулчейн менеджер
+rojo --version      # 7.6.1   — синхронизация с Studio
+wally --version     # 0.3.2   — пакетный менеджер
+selene --version    # 0.30.1  — линтер
+stylua --version    # 2.4.0   — форматтер
+lune --version      # 0.10.4  — Luau рантайм (CI/скрипты)
+darklua --version   # 0.18.0  — код-процессор
+asphalt --version   # 1.2.0   — asset pipeline
+rbxcloud --version  # 0.17.0  — Roblox Open Cloud CLI
+magick --version    # ImageMagick — обработка изображений
 ```
 
-### PATH (добавлено в ~/.zshrc)
+### PATH (в ~/.zshrc)
+
 ```bash
-export PATH="$HOME/.aftman/bin:$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.rokit/bin:$HOME/.aftman/bin:$HOME/.cargo/bin:$PATH"
 ```
+
+---
+
+## Что даёт enterprise-уровень
+
+| Что делают обычные разработчики | Что делаем мы |
+|---|---|
+| Редактируют код прямо в Studio | Filesystem-first: VSCode + Git + Rojo |
+| Копируют модули вручную | Wally + версионирование зависимостей |
+| Нет тестов | TestEZ + Lune для автоматических тестов |
+| Ручная публикация | CI/CD: push → lint → test → build → deploy |
+| Instance.new для UI | Fusion — реактивный декларативный UI |
+| Сырые DataStores | ProfileStore — session-locked, auto-save, миграции |
+| Нет аналитики | GameAnalytics + AnalyticsService + A/B тесты |
+| Ручная загрузка ассетов | Asphalt — automated asset pipeline + codegen |
+| Нет код-процессинга | Darklua — dead code elimination, минификация |
+| Один язык (Luau) | Luau + Lune для build-скриптов + Python для аналитики |
+| Не видят что делает ИИ | Screenshots + ClaudeCodeBridge + Blender MCP viewport |

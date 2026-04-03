@@ -1,0 +1,13 @@
+[config]
+std = "roblox"
+
+[rules]
+unused_variable = "warn"
+shadowing = "allow"
+unscoped_variables = "deny"
+incorrect_standard_library_use = "deny"
+global_usage = "warn"
+if_same_then_else = "warn"
+multiple_statements = "allow"
+parenthese_conditions = "warn"
+type_check_inside_call = "warn"

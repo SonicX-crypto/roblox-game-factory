@@ -1,0 +1,10 @@
+# Asphalt — asset pipeline configuration
+# Uploads images, sounds, models to Roblox and generates asset IDs
+
+[creator]
+type = "user"
+# id = YOUR_USER_ID  # Set after first game creation
+
+[codegen]
+output = "src/shared/Assets.luau"
+style = "flat"
