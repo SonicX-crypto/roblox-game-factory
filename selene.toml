@@ -1,4 +1,3 @@
-[config]
 std = "roblox"
 
 [rules]
@@ -11,3 +10,5 @@ if_same_then_else = "warn"
 multiple_statements = "allow"
 parenthese_conditions = "warn"
 type_check_inside_call = "warn"
+empty_if = "warn"
+mismatched_arg_count = "warn"

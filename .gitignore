@@ -5,6 +5,7 @@ roblox_api
 
 # Dependencies
 Packages/
+DevPackages/
 node_modules/
 wally_packages/
 

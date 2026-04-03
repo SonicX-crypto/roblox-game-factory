@@ -1,0 +1,29 @@
+#!/bin/sh
+# Pre-commit hook: lint + format check on staged .luau files
+
+export PATH="$HOME/.rokit/bin:$HOME/.aftman/bin:$HOME/.cargo/bin:$PATH"
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.luau$')
+
+if [ -z "$STAGED_FILES" ]; then
+    exit 0
+fi
+
+echo "Running StyLua format check..."
+stylua --check $STAGED_FILES
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "StyLua formatting failed. Run 'stylua src/' to fix."
+    exit 1
+fi
+
+echo "Running Selene lint..."
+selene $STAGED_FILES
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "Selene linting failed. Fix issues before committing."
+    exit 1
+fi
+
+echo "All checks passed."
+exit 0

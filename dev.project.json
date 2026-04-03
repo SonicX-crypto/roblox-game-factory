@@ -1,10 +1,15 @@
 {
-  "name": "RobloxGame",
+  "name": "RobloxGameDev",
   "tree": {
     "$className": "DataModel",
     "ServerScriptService": {
       "$className": "ServerScriptService",
-      "$path": "src/server"
+      "Server": {
+        "$path": "src/server"
+      },
+      "DevTools": {
+        "$path": "src/dev/server"
+      }
     },
     "ReplicatedStorage": {
       "$className": "ReplicatedStorage",
@@ -13,6 +18,9 @@
       },
       "Packages": {
         "$path": "Packages"
+      },
+      "DevPackages": {
+        "$path": "DevPackages"
       }
     },
     "StarterGui": {
@@ -47,12 +55,6 @@
         "Brightness": 2,
         "EnvironmentDiffuseScale": 1,
         "EnvironmentSpecularScale": 1
-      }
-    },
-    "SoundService": {
-      "$className": "SoundService",
-      "$properties": {
-        "RespectFilteringEnabled": true
       }
     }
   }

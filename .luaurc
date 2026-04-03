@@ -1,0 +1,25 @@
+{
+  "languageMode": "strict",
+  "lint": {
+    "*": true,
+    "LocalUnused": true,
+    "LocalShadow": true,
+    "SameLineStatement": true,
+    "IntegerParsing": true,
+    "ComparisonPrecedence": true,
+    "UnknownType": true,
+    "ForRange": true,
+    "UnbalancedAssignment": true,
+    "ImplicitReturn": true,
+    "DuplicateLocal": true,
+    "FormatString": true,
+    "TableLiteral": true,
+    "UninitializedLocal": true,
+    "DeprecatedApi": true,
+    "TableOperations": true,
+    "DuplicateFunction": true
+  },
+  "lintErrors": false,
+  "typeErrors": true,
+  "globals": ["game", "script", "workspace", "plugin"]
+}
